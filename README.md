@@ -43,6 +43,9 @@ module.exports = ArticleController;
 
 
 **Create routes**
+
+Without middleware:
+
 ```js
 // index.js
 const path = require('path');
@@ -54,6 +57,26 @@ const router = new Router({
   controllersPath: path.resolve(__dirname, 'app', 'controllers') // default value is /path/to/project/controllers/
 });
 
+router.get('/', function *() {
+    // some code
+});
+
+router.get('/api/v1/articles', 'ArticleController@list');
+router.get('/api/v1/articles/:id', 'ArticleController@show');
+router.post('/api/v1/articles', 'ArticleController@create');
+router.put('/api/v1/articles/:id', 'ArticleController@update');
+router.patch('/api/v1/articles/:id', 'ArticleController@update');
+router.del('/api/v1/articles', 'ArticleController@destroy');
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+app.listen(3000);
+```
+
+With middleware:
+
+```js
 const authMiddleware = function *(next) {
     // auth check
     
@@ -66,21 +89,10 @@ const isAdminMiddleware = function *(next) {
     yield next;
 };
 
-router.get('/', function *() {
-    // some code
-});
-
-router.get('/api/v1/articles', 'ArticleController@list');
-router.get('/api/v1/articles/:id', 'ArticleController@show');
 router.post('/api/v1/articles', authMiddleware, 'ArticleController@create');
 router.put('/api/v1/articles/:id', authMiddleware, 'ArticleController@update');
 router.patch('/api/v1/articles/:id', authMiddleware, 'ArticleController@update');
 router.del('/api/v1/articles', authMiddleware, isAdminMiddleware, 'ArticleController@destroy');
-
-app.use(router.routes());
-app.use(router.allowedMethods());
-
-app.listen(3000);
 ```
 
 # Licence
