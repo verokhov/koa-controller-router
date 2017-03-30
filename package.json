@@ -23,6 +23,7 @@
   "homepage": "https://github.com/noobikz0r/koa-controller-router#readme",
   "dependencies": {
     "app-root-path": "^2.0.1",
+    "koa": "^1.4.0",
     "koa-router": "^5.4.0",
     "lodash": "^4.17.4",
     "require-dir": "^0.3.1"
